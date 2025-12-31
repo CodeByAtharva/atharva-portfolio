@@ -11,7 +11,7 @@ const projects = [
     stack: ["React", "JavaScript", "Tailwind CSS", "Express.js"],
     github: "https://github.com/tedxpvgcoet-tech/tedxpvgcoetFrontend",
     live: "https://www.tedxpvgcoet.in/",
-    thumbnail: "../img/tedx.jpg", // Add your actual image path here
+    thumbnail: "../img/tedx.jpg",
     color: "red"
   },
   {
@@ -20,8 +20,26 @@ const projects = [
     stack: ["Solidity", "Ethereum", "React.js", "MongoDB"],
     github: "//github.com/CodeByAtharva/Blood-Share",
     live: "https://bloodshare.vercel.app/",
-    thumbnail: "../img/blood.jpg", // Add your actual image path here
+    thumbnail: "../img/blood.jpg",
     color: "blue"
+  },
+  {
+    title: "Smart Deck",
+    description: "A platform that converts any book or text into automatically generated quizzes using AI, helping students study efficiently with instant question sets.",
+    stack: ["HTML", "CSS", "JavaScript", "Gemini API"],
+    github: "https://github.com/CodeByAtharva/I7J8K_Prompt2Prototype",
+    live: "https://i7-j8-k-prompt2-prototype.vercel.app/",
+    thumbnail: "../img/deck.jpg",
+    color: "green"
+  },
+  {
+    title: "Spain Collection Clone",
+    description: "A visually appealing luxury website clone inspired by Spain premium product collections, built with smooth animations using GSAP.",
+    stack: ["HTML", "CSS", "JavaScript", "GSAP"],
+    github: "https://github.com/CodeByAtharva/spain-collection",
+    live: "https://codebyatharva.github.io/spain-collection/",
+    thumbnail: "../img/spain.jpeg",
+    color: "purple"
   },
 ];
 
@@ -42,7 +60,23 @@ const getColorClasses = (color) => {
       text: "text-blue-400",
       glow: "shadow-blue-500/20",
       hover: "hover:shadow-blue-500/30"
-    }
+    },
+    green: {
+      gradient: "from-green-500 to-emerald-500",
+      bg: "bg-green-500/10",
+      border: "border-green-500/30",
+      text: "text-green-400",
+      glow: "shadow-green-500/20",
+      hover: "hover:shadow-green-500/30"
+    },
+    purple: {
+      gradient: "from-purple-500 to-pink-500",
+      bg: "bg-purple-500/10",
+      border: "border-purple-500/30",
+      text: "text-purple-400",
+      glow: "shadow-purple-500/20",
+      hover: "hover:shadow-purple-500/30"
+    },
   };
   return colors[color];
 };
@@ -108,18 +142,18 @@ const ProjectsSection = () => {
                     <motion.img
                       src={project.thumbnail}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110 group-hover/image:brightness-90"
                       whileHover={{ scale: 1.1 }}
                     />
-                    
+
                     {/* Gradient Overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500`} />
-                    
-                    {/* Hover Overlay with Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-50 group-hover:opacity-30 transition-opacity duration-500" />
+
+                    {/* Hover Gradient Overlay */}
                     <motion.div
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
-                      className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}
+                      className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} opacity-0 group-hover:opacity-25 transition-opacity duration-500`}
                     />
 
                     {/* Corner Accent */}
@@ -199,8 +233,8 @@ const ProjectsSection = () => {
                     </div>
                   </div>
 
-                  {/* Hover Glow Effect */}
-                  <div className={`absolute inset-0 ${colors.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl`} />
+                  {/* Subtle Hover Glow */}
+                  <div className={`absolute inset-0 ${colors.bg} opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none rounded-2xl`} />
                 </div>
               </motion.div>
             );
