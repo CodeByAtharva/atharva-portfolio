@@ -106,7 +106,7 @@ const ProjectsSection = () => {
   const colors = getColorClasses(project.color);
 
   return (
-    <section id="projects" className="relative bg-gray-900" ref={sectionRef}>
+    <section id="projects" className="py-24 relative overflow-hidden bg-gray-900" ref={sectionRef}>
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
@@ -121,7 +121,7 @@ const ProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center py-24 pb-12"
+          className="text-center mb-24"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -339,7 +339,7 @@ const ProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center py-24"
+          className="text-center mt-32"
         >
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 text-gray-300">
             <Zap className="w-4 h-4 text-yellow-400" />
