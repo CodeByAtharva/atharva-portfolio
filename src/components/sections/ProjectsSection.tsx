@@ -76,149 +76,142 @@ const getColorClasses = (color) => {
   return colors[color];
 };
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index, totalCards }: { project: typeof projects[0]; index: number; totalCards: number }) => {
   const colors = getColorClasses(project.color);
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
     target: cardRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "center center"]
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 1]);
+
+  // Calculate stacking offset - cards stack on top of each other
+  const topOffset = 100 + index * 20;
 
   return (
     <motion.div
       ref={cardRef}
-      style={{ scale, opacity }}
-      className="sticky top-24 mb-12"
+      style={{ 
+        scale, 
+        opacity,
+        top: topOffset,
+        zIndex: index + 1,
+      }}
+      className="sticky h-[85vh] min-h-[600px]"
     >
-      <div className="grid lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto">
-        {/* Left Side - Thumbnail */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="relative group/image order-2 lg:order-1"
-        >
-          <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-            {/* Image */}
-            <img
-              src={project.thumbnail}
-              alt={project.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
-            />
-            
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-60" />
+      <div 
+        className="h-full rounded-3xl overflow-hidden shadow-2xl border border-gray-700/50"
+        style={{
+          background: 'linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(17, 24, 39, 0.98) 100%)',
+        }}
+      >
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 h-full p-6 lg:p-10">
+          {/* Left Side - Thumbnail */}
+          <div className="relative group/image h-full min-h-[250px] order-2 lg:order-1">
+            <div className="relative h-full rounded-2xl overflow-hidden">
+              {/* Image */}
+              <img
+                src={project.thumbnail}
+                alt={project.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
+              />
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/30 to-transparent opacity-50" />
 
-            {/* Corner Accent */}
-            <div className="absolute top-4 right-4 z-10">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                className="p-3 rounded-xl bg-gray-900/60 backdrop-blur-sm border border-gray-700/50"
-              >
-                <Sparkles className="w-6 h-6 text-white" />
-              </motion.div>
+              {/* Corner Accent */}
+              <div className="absolute top-4 right-4 z-10">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="p-2.5 rounded-xl bg-gray-900/60 backdrop-blur-sm border border-gray-700/50"
+                >
+                  <Sparkles className="w-5 h-5 text-white" />
+                </motion.div>
+              </div>
+
+              {/* Project Number Badge */}
+              <div className="absolute top-4 left-4 z-10">
+                <div className={`px-4 py-2 rounded-xl bg-gradient-to-r ${colors.gradient} text-white font-bold text-lg shadow-lg`}>
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+              </div>
+
+              {/* Hover Glow Effect */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} opacity-0 group-hover/image:opacity-10 transition-opacity duration-500 pointer-events-none`} />
             </div>
+          </div>
 
-            {/* Project Number Badge */}
-            <div className="absolute top-4 left-4 z-10">
-              <div className={`px-4 py-2 rounded-xl bg-gradient-to-r ${colors.gradient} text-white font-bold text-lg shadow-lg`}>
-                {String(index + 1).padStart(2, '0')}
+          {/* Right Side - Content */}
+          <div className="flex flex-col justify-center order-1 lg:order-2 space-y-4 lg:space-y-6">
+            {/* Category Badge */}
+            <div className="inline-block self-start">
+              <div className={`px-4 py-2 rounded-full ${colors.bg} border ${colors.border} backdrop-blur-sm`}>
+                <span className={`${colors.text} font-semibold text-sm`}>FEATURED PROJECT</span>
               </div>
             </div>
 
-            {/* Hover Glow Effect */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} opacity-0 group-hover/image:opacity-10 transition-opacity duration-500 pointer-events-none`} />
-          </div>
-        </motion.div>
+            {/* Title */}
+            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+              {project.title}
+            </h3>
 
-        {/* Right Side - Content */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="order-1 lg:order-2 space-y-6"
-        >
-          {/* Category Badge */}
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            transition={{ type: "spring", duration: 0.5 }}
-            viewport={{ once: true }}
-            className="inline-block"
-          >
-            <div className={`px-4 py-2 rounded-full ${colors.bg} border ${colors.border} backdrop-blur-sm`}>
-              <span className={`${colors.text} font-semibold text-sm`}>FEATURED PROJECT</span>
+            {/* Description */}
+            <p className="text-gray-400 text-base lg:text-lg leading-relaxed">
+              {project.description}
+            </p>
+
+            {/* Tech Stack */}
+            <div className="flex flex-wrap gap-2 lg:gap-3">
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className={`px-3 lg:px-4 py-1.5 lg:py-2 text-sm font-semibold ${colors.bg} ${colors.text} rounded-xl border ${colors.border} backdrop-blur-sm`}
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
-          </motion.div>
 
-          {/* Title */}
-          <h3 className="font-display text-4xl md:text-5xl font-bold text-white leading-tight">
-            {project.title}
-          </h3>
-
-          {/* Description */}
-          <p className="text-gray-400 text-lg leading-relaxed">
-            {project.description}
-          </p>
-
-          {/* Tech Stack */}
-          <div className="flex flex-wrap gap-3">
-            {project.stack.map((tech, techIndex) => (
-              <motion.span
-                key={tech}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: techIndex * 0.05 }}
-                viewport={{ once: true }}
-                className={`px-4 py-2 text-sm font-semibold ${colors.bg} ${colors.text} rounded-xl border ${colors.border} backdrop-blur-sm`}
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-3 lg:gap-4 pt-2 lg:pt-4">
+              <Button
+                size="lg"
+                className={`rounded-xl bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white font-semibold shadow-lg ${colors.glow} transition-all duration-300 px-6 lg:px-8`}
+                asChild
               >
-                {tech}
-              </motion.span>
-            ))}
+                <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <ExternalLink className="w-5 h-5" />
+                  <span>Live Demo</span>
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-xl border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-700/50 transition-all duration-300 px-6 lg:px-8"
+                asChild
+              >
+                <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <Github className="w-5 h-5" />
+                  <span className="font-semibold">View Code</span>
+                </a>
+              </Button>
+            </div>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Button
-              size="lg"
-              className={`rounded-xl bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white font-semibold shadow-lg ${colors.glow} transition-all duration-300 px-8`}
-              asChild
-            >
-              <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                <ExternalLink className="w-5 h-5" />
-                <span>Live Demo</span>
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-xl border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-700/50 transition-all duration-300 px-8"
-              asChild
-            >
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                <Github className="w-5 h-5" />
-                <span className="font-semibold">View Code</span>
-              </a>
-            </Button>
-          </div>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );
 };
 
 const ProjectsSection = () => {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden bg-gray-900" ref={sectionRef}>
+    <section id="projects" className="relative bg-gray-900" ref={sectionRef}>
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
@@ -233,7 +226,7 @@ const ProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-24"
+          className="text-center py-24 pb-12"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -257,10 +250,10 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Sticky Scroll Projects */}
-        <div className="space-y-32">
+        {/* Sticky Scroll Stack Cards */}
+        <div className="pb-[50vh]">
           {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} index={index} />
+            <ProjectCard key={index} project={project} index={index} totalCards={projects.length} />
           ))}
         </div>
 
@@ -270,7 +263,7 @@ const ProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center mt-32"
+          className="text-center py-24"
         >
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 text-gray-300">
             <Zap className="w-4 h-4 text-yellow-400" />
