@@ -76,96 +76,149 @@ const getColorClasses = (color) => {
   return colors[color];
 };
 
-const ProjectContent = ({ project, index }) => {
+const ProjectCard = ({ project, index }) => {
   const colors = getColorClasses(project.color);
-  const contentRef = useRef(null);
+  const cardRef = useRef(null);
   
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+
   return (
-    <div ref={contentRef} className="h-screen flex items-center py-24">
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ amount: 0.5 }}
-        className="space-y-6 w-full"
-      >
-        {/* Category Badge */}
+    <motion.div
+      ref={cardRef}
+      style={{ scale, opacity }}
+      className="sticky top-24 mb-12"
+    >
+      <div className="grid lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto">
+        {/* Left Side - Thumbnail */}
         <motion.div
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          transition={{ type: "spring", duration: 0.5 }}
-          viewport={{ amount: 0.5 }}
-          className="inline-block"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="relative group/image order-2 lg:order-1"
         >
-          <div className={`px-4 py-2 rounded-full ${colors.bg} border ${colors.border} backdrop-blur-sm`}>
-            <span className={`${colors.text} font-semibold text-sm`}>PROJECT {String(index + 1).padStart(2, '0')}</span>
+          <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+            {/* Image */}
+            <img
+              src={project.thumbnail}
+              alt={project.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
+            />
+            
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-60" />
+
+            {/* Corner Accent */}
+            <div className="absolute top-4 right-4 z-10">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="p-3 rounded-xl bg-gray-900/60 backdrop-blur-sm border border-gray-700/50"
+              >
+                <Sparkles className="w-6 h-6 text-white" />
+              </motion.div>
+            </div>
+
+            {/* Project Number Badge */}
+            <div className="absolute top-4 left-4 z-10">
+              <div className={`px-4 py-2 rounded-xl bg-gradient-to-r ${colors.gradient} text-white font-bold text-lg shadow-lg`}>
+                {String(index + 1).padStart(2, '0')}
+              </div>
+            </div>
+
+            {/* Hover Glow Effect */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} opacity-0 group-hover/image:opacity-10 transition-opacity duration-500 pointer-events-none`} />
           </div>
         </motion.div>
 
-        {/* Title */}
-        <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-          {project.title}
-        </h3>
+        {/* Right Side - Content */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="order-1 lg:order-2 space-y-6"
+        >
+          {/* Category Badge */}
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-block"
+          >
+            <div className={`px-4 py-2 rounded-full ${colors.bg} border ${colors.border} backdrop-blur-sm`}>
+              <span className={`${colors.text} font-semibold text-sm`}>FEATURED PROJECT</span>
+            </div>
+          </motion.div>
 
-        {/* Description */}
-        <p className="text-gray-400 text-lg md:text-xl leading-relaxed max-w-xl">
-          {project.description}
-        </p>
+          {/* Title */}
+          <h3 className="font-display text-4xl md:text-5xl font-bold text-white leading-tight">
+            {project.title}
+          </h3>
 
-        {/* Tech Stack */}
-        <div className="flex flex-wrap gap-3">
-          {project.stack.map((tech, techIndex) => (
-            <motion.span
-              key={tech}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: techIndex * 0.05 }}
-              viewport={{ amount: 0.5 }}
-              className={`px-4 py-2 text-sm font-semibold ${colors.bg} ${colors.text} rounded-xl border ${colors.border} backdrop-blur-sm`}
+          {/* Description */}
+          <p className="text-gray-400 text-lg leading-relaxed">
+            {project.description}
+          </p>
+
+          {/* Tech Stack */}
+          <div className="flex flex-wrap gap-3">
+            {project.stack.map((tech, techIndex) => (
+              <motion.span
+                key={tech}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: techIndex * 0.05 }}
+                viewport={{ once: true }}
+                className={`px-4 py-2 text-sm font-semibold ${colors.bg} ${colors.text} rounded-xl border ${colors.border} backdrop-blur-sm`}
+              >
+                {tech}
+              </motion.span>
+            ))}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-4 pt-4">
+            <Button
+              size="lg"
+              className={`rounded-xl bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white font-semibold shadow-lg ${colors.glow} transition-all duration-300 px-8`}
+              asChild
             >
-              {tech}
-            </motion.span>
-          ))}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4 pt-4">
-          <Button
-            size="lg"
-            className={`rounded-xl bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-white font-semibold shadow-lg ${colors.glow} transition-all duration-300 px-8`}
-            asChild
-          >
-            <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-              <ExternalLink className="w-5 h-5" />
-              <span>Live Demo</span>
-            </a>
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-xl border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-700/50 transition-all duration-300 px-8"
-            asChild
-          >
-            <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-              <Github className="w-5 h-5" />
-              <span className="font-semibold">View Code</span>
-            </a>
-          </Button>
-        </div>
-      </motion.div>
-    </div>
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                <ExternalLink className="w-5 h-5" />
+                <span>Live Demo</span>
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="rounded-xl border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-700/50 transition-all duration-300 px-8"
+              asChild
+            >
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                <Github className="w-5 h-5" />
+                <span className="font-semibold">View Code</span>
+              </a>
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
 
 const ProjectsSection = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const sectionRef = useRef(null);
 
   return (
-    <section id="projects" className="relative overflow-hidden bg-gray-900">
+    <section id="projects" className="py-24 relative overflow-hidden bg-gray-900" ref={sectionRef}>
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
@@ -180,7 +233,7 @@ const ProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center py-24"
+          className="text-center mb-24"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -204,78 +257,11 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Sticky Container */}
-        <div ref={containerRef} className="relative">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
-            {/* Left Side - Sticky Image Container */}
-            <div className="lg:sticky lg:top-24 h-[500px] lg:h-screen lg:max-h-[600px] flex items-center">
-              <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                {projects.map((project, index) => {
-                  const colors = getColorClasses(project.color);
-                  const start = index / projects.length;
-                  const end = (index + 1) / projects.length;
-                  
-                  const opacity = useTransform(
-                    scrollYProgress,
-                    [start, start + 0.05, end - 0.05, end],
-                    [0, 1, 1, 0]
-                  );
-                  
-                  const scale = useTransform(
-                    scrollYProgress,
-                    [start, start + 0.05, end - 0.05, end],
-                    [0.8, 1, 1, 1.1]
-                  );
-
-                  return (
-                    <motion.div
-                      key={index}
-                      style={{ opacity, scale }}
-                      className="absolute inset-0"
-                    >
-                      {/* Image */}
-                      <img
-                        src={project.thumbnail}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                      
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-60" />
-
-                      {/* Corner Accent */}
-                      <div className="absolute top-4 right-4 z-10">
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                          className="p-3 rounded-xl bg-gray-900/60 backdrop-blur-sm border border-gray-700/50"
-                        >
-                          <Sparkles className="w-6 h-6 text-white" />
-                        </motion.div>
-                      </div>
-
-                      {/* Project Number Badge */}
-                      <div className="absolute bottom-4 left-4 z-10">
-                        <div className={`px-5 py-3 rounded-xl bg-gradient-to-r ${colors.gradient} text-white font-bold text-2xl shadow-lg backdrop-blur-sm`}>
-                          {String(index + 1).padStart(2, '0')}
-                        </div>
-                      </div>
-
-                      {/* Colored Glow */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} opacity-20 mix-blend-overlay`} />
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Side - Scrolling Content */}
-            <div className="lg:py-0">
-              {projects.map((project, index) => (
-                <ProjectContent key={index} project={project} index={index} />
-              ))}
-            </div>
-          </div>
+        {/* Sticky Scroll Projects */}
+        <div className="space-y-32">
+          {projects.map((project, index) => (
+            <ProjectCard key={index} project={project} index={index} />
+          ))}
         </div>
 
         {/* Call to Action */}
@@ -284,7 +270,7 @@ const ProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center py-24"
+          className="text-center mt-32"
         >
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 text-gray-300">
             <Zap className="w-4 h-4 text-yellow-400" />
