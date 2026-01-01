@@ -1,22 +1,48 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Phone, Linkedin, Github, ExternalLink, Send } from "lucide-react";
+import { Mail, Phone, Linkedin, Github, ExternalLink, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from "@emailjs/browser";
 
 const ContactSection = () => {
   const ref = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Message Sent!", description: "Thank you for reaching out. I'll get back to you soon." });
-    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        "service_k2cx589",
+        "template_k7cn81m",
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        "9IMGar6SZXgcJntgo"
+      );
+      
+      toast({ title: "Message Sent!", description: "Thank you for reaching out. I'll get back to you soon." });
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      toast({ 
+        title: "Failed to send", 
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contacts = [
@@ -40,7 +66,10 @@ const ContactSection = () => {
             <Input placeholder="Your Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-background/50" />
             <Input type="email" placeholder="Your Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-background/50" />
             <Textarea placeholder="Your Message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} required rows={5} className="bg-background/50" />
-            <Button type="submit" className="w-full bg-gradient-to-r from-primary to-accent"><Send className="w-4 h-4 mr-2" />Send Message</Button>
+            <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-primary to-accent">
+              {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
           </motion.form>
 
           <motion.div initial={{ opacity: 0, x: 50 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 }} className="space-y-4">
