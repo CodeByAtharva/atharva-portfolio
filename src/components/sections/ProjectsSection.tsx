@@ -5,6 +5,25 @@ import { Button } from "@/components/ui/button";
 
 const projects = [
   {
+  title: "Document Scanner and Organizer",
+  description: "AI-powered web application to scan, upload, and organize documents with automatic text extraction, smart categorization, and full-text search using vision-enabled LLMs.",
+  stack: [
+    "React 19",
+    "Vite",
+    "Tailwind CSS",
+    "FastAPI",
+    "Python",
+    "SQLite",
+    "Firebase Authentication",
+    "LangChain",
+    "Google Gemini Vision"
+  ],
+  github: "https://github.com/CodeByAtharva/Docscanner-and-organizer",
+  live: "https://docscanner-and-organizer-1.onrender.com/",
+  thumbnail: "../img/DocuMind.jpg",
+  color: "purple"
+},
+  {
     title: "TEDxPVGCOET Website",
     description: "Built responsive UI with real-time content integration for TEDx event, featuring dynamic content management and seamless user experience.",
     stack: ["React", "JavaScript", "Tailwind CSS", "Express.js"],
