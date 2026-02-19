@@ -18,12 +18,12 @@ const HeroSection = () => {
     >
       {/* Enhanced Background Gradient Blobs - Adjusted for mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-10 sm:-left-20 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" 
-             style={{ animationDuration: '4s' }} />
-        <div className="absolute top-1/3 -right-10 sm:-right-20 w-72 sm:w-[28rem] h-72 sm:h-[28rem] bg-purple-500/15 rounded-full blur-3xl animate-pulse" 
-             style={{ animationDuration: '5s', animationDelay: '1s' }} />
-        <div className="absolute bottom-1/4 left-1/3 w-60 sm:w-80 h-60 sm:h-80 bg-cyan-500/15 rounded-full blur-3xl animate-pulse" 
-             style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div className="absolute top-1/4 -left-10 sm:-left-20 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '4s' }} />
+        <div className="absolute top-1/3 -right-10 sm:-right-20 w-72 sm:w-[28rem] h-72 sm:h-[28rem] bg-purple-500/15 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '5s', animationDelay: '1s' }} />
+        <div className="absolute bottom-1/4 left-1/3 w-60 sm:w-80 h-60 sm:h-80 bg-cyan-500/15 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '6s', animationDelay: '2s' }} />
       </div>
 
       <div className="container mx-auto relative z-10">
@@ -37,24 +37,24 @@ const HeroSection = () => {
           >
             <div className="relative">
               {/* Animated Glow effect behind image */}
-              <motion.div 
-                animate={{ 
+              <motion.div
+                animate={{
                   scale: [1, 1.05, 1],
                   opacity: [0.3, 0.5, 0.3]
                 }}
-                transition={{ 
-                  duration: 3, 
+                transition={{
+                  duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
                 className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-3xl"
               />
-              
+
               {/* Image container with gradient border - Responsive sizing */}
               <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full p-1 bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 shadow-2xl">
                 <div className="w-full h-full rounded-full bg-gray-900 overflow-hidden ring-2 sm:ring-4 ring-gray-900">
-                  <img 
-                    src="pfp.jpeg" 
+                  <img
+                    src="pfp.jpeg"
                     alt="Atharva Kamble"
                     className="w-full h-full object-cover object-center"
                   />
@@ -63,12 +63,12 @@ const HeroSection = () => {
 
               {/* Floating decorations - Scaled for mobile */}
               <motion.div
-                animate={{ 
+                animate={{
                   y: [0, -15, 0],
                   rotate: [12, 18, 12]
                 }}
-                transition={{ 
-                  duration: 3, 
+                transition={{
+                  duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
@@ -77,12 +77,12 @@ const HeroSection = () => {
                 💻
               </motion.div>
               <motion.div
-                animate={{ 
+                animate={{
                   y: [0, 12, 0],
                   rotate: [-12, -18, -12]
                 }}
-                transition={{ 
-                  duration: 4, 
+                transition={{
+                  duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
@@ -90,15 +90,15 @@ const HeroSection = () => {
               >
                 ⚡
               </motion.div>
-              
+
               {/* Additional floating element */}
               <motion.div
-                animate={{ 
+                animate={{
                   y: [0, -10, 0],
                   x: [0, 5, 0]
                 }}
-                transition={{ 
-                  duration: 3.5, 
+                transition={{
+                  duration: 3.5,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
@@ -194,6 +194,7 @@ const HeroSection = () => {
                 href="https://github.com/CodeByAtharva"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub Profile"
                 className="p-2.5 sm:p-3 rounded-full bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-blue-500/50 hover:bg-gray-800/80 transition-all duration-300 shadow-lg"
               >
                 <Github className="w-5 h-5 sm:w-6 sm:h-6 text-gray-300" />
@@ -204,6 +205,7 @@ const HeroSection = () => {
                 href="https://www.linkedin.com/in/atharva-kamble-10685928b"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn Profile"
                 className="p-2.5 sm:p-3 rounded-full bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-blue-500/50 hover:bg-gray-800/80 transition-all duration-300 shadow-lg"
               >
                 <Linkedin className="w-5 h-5 sm:w-6 sm:h-6 text-gray-300" />
@@ -212,6 +214,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.15, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="mailto:codebyatharva21@gmail.com"
+                aria-label="Email Me"
                 className="p-2.5 sm:p-3 rounded-full bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-blue-500/50 hover:bg-gray-800/80 transition-all duration-300 shadow-lg"
               >
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-gray-300" />
@@ -229,8 +232,8 @@ const HeroSection = () => {
         >
           <motion.div
             animate={{ y: [0, 12, 0] }}
-            transition={{ 
-              duration: 1.5, 
+            transition={{
+              duration: 1.5,
               repeat: Infinity,
               ease: "easeInOut"
             }}

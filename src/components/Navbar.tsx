@@ -53,14 +53,13 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
-          isScrolled
-            ? "glass shadow-lg shadow-primary/10"
-            : "bg-transparent"
-        } rounded-full px-6 py-3`}
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${isScrolled
+          ? "glass shadow-lg shadow-primary/10"
+          : "bg-transparent"
+          } rounded-full px-6 py-3`}
       >
         <div className="flex items-center gap-8">
-      
+
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
@@ -72,11 +71,10 @@ const Navbar = () => {
                   e.preventDefault();
                   scrollToSection(item.href);
                 }}
-                className={`relative text-sm font-medium transition-colors duration-300 ${
-                  activeSection === item.href.replace("#", "")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`relative text-sm font-medium transition-colors duration-300 ${activeSection === item.href.replace("#", "")
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+                  }`}
                 whileHover={{ y: -2 }}
               >
                 {item.name}
@@ -88,12 +86,22 @@ const Navbar = () => {
                 )}
               </motion.a>
             ))}
+            {/* Command Menu Trigger */}
+            <button
+              onClick={() => window.dispatchEvent(new Event("open-command-menu"))}
+              className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all duration-300 border border-transparent hover:border-primary/20 ml-2"
+            >
+              <span className="text-xs font-medium">Search</span>
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-background/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 group-hover:text-primary">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </button>
           </div>
 
           {/* Theme Toggle & Mobile Menu */}
           <div className="flex items-center gap-3">
-            
-            
+
+
             {/* Mobile Menu Button */}
             <motion.button
               whileTap={{ scale: 0.9 }}
@@ -132,11 +140,10 @@ const Navbar = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className={`text-lg font-medium py-2 px-4 rounded-lg transition-colors ${
-                    activeSection === item.href.replace("#", "")
-                      ? "bg-primary/10 text-primary"
-                      : "hover:bg-muted"
-                  }`}
+                  className={`text-lg font-medium py-2 px-4 rounded-lg transition-colors ${activeSection === item.href.replace("#", "")
+                    ? "bg-primary/10 text-primary"
+                    : "hover:bg-muted"
+                    }`}
                 >
                   {item.name}
                 </motion.a>

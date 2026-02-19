@@ -3,65 +3,9 @@ import { useRef } from "react";
 import { ExternalLink, Github, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const projects = [
-  {
-  title: "Document Scanner and Organizer",
-  description: "AI-powered web application to scan, upload, and organize documents with automatic text extraction, smart categorization, and full-text search using vision-enabled LLMs.",
-  stack: [
-    "React 19",
-    "Vite",
-    "Tailwind CSS",
-    "FastAPI",
-    "Python",
-    "SQLite",
-    "Firebase Authentication",
-    "LangChain",
-    "Google Gemini Vision"
-  ],
-  github: "https://github.com/CodeByAtharva/Docscanner-and-organizer",
-  live: "https://docscanner-and-organizer-1.onrender.com/",
-  thumbnail: "../img/DocuMind.jpg",
-  color: "purple"
-},
-  {
-    title: "TEDxPVGCOET Website",
-    description: "Built responsive UI with real-time content integration for TEDx event, featuring dynamic content management and seamless user experience.",
-    stack: ["React", "JavaScript", "Tailwind CSS", "Express.js"],
-    github: "https://github.com/tedxpvgcoet-tech/tedxpvgcoetFrontend",
-    live: "https://www.tedxpvgcoet.in/",
-    thumbnail: "../img/tedx.jpg",
-    color: "red"
-  },
-  {
-    title: "Blood Share",
-    description: "Ethereum-based decentralized blood donor system using Solidity smart contracts, enabling secure and transparent blood donation tracking.",
-    stack: ["Solidity", "Ethereum", "React.js", "MongoDB"],
-    github: "https://github.com/CodeByAtharva/Blood-Share",
-    live: "https://bloodshare.vercel.app/",
-    thumbnail: "../img/blood.jpg",
-    color: "blue"
-  },
-  {
-    title: "Smart Deck",
-    description: "A platform that converts any book or text into automatically generated quizzes using AI, helping students study efficiently with instant question sets.",
-    stack: ["HTML", "CSS", "JavaScript", "Gemini Api"],
-    github: "https://github.com/CodeByAtharva/I7J8K_Prompt2Prototype",
-    live: "https://i7-j8-k-prompt2-prototype.vercel.app/",
-    thumbnail: "../img/deck.jpg",
-    color: "purple"
-  },
-  {
-    title: "Spain Collection Clone",
-    description: "A visually appealing luxury website clone inspired by Spain premium product collections, built with smooth animations using GSAP.",
-    stack: ["HTML", "CSS", "JavaScript", "GSAP"],
-    github: "https://github.com/CodeByAtharva/spain-collection",
-    live: "https://codebyatharva.github.io/spain-collection/",
-    thumbnail: "../img/spain.jpeg",
-    color: "green"
-  },
-];
+import { projects, Project } from "@/data/projects";
 
-const getColorClasses = (color) => {
+const getColorClasses = (color: Project["color"]) => {
   const colors = {
     red: {
       gradient: "from-red-500 to-orange-500",
@@ -77,14 +21,14 @@ const getColorClasses = (color) => {
       text: "text-blue-400",
       glow: "shadow-blue-500/20",
     },
-    green: {  
+    green: {
       gradient: "from-green-500 to-emerald-500",
       bg: "bg-green-500/10",
       border: "border-green-500/30",
       text: "text-green-400",
       glow: "shadow-green-500/20",
     },
-    purple: { 
+    purple: {
       gradient: "from-purple-500 to-pink-500",
       bg: "bg-purple-500/10",
       border: "border-purple-500/30",
@@ -95,10 +39,10 @@ const getColorClasses = (color) => {
   return colors[color];
 };
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const colors = getColorClasses(project.color);
   const cardRef = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ["start end", "end start"]
@@ -129,7 +73,7 @@ const ProjectCard = ({ project, index }) => {
               alt={project.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
             />
-            
+
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-60" />
 
