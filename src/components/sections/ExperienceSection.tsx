@@ -6,11 +6,11 @@ import { Briefcase, Calendar, MapPin, TrendingUp, Sparkles } from "lucide-react"
 const experiences = [
   {
     title: "Student Intern – Agentic AI Development",
-    company: "Ongoing",
+    company: "Internship",
     location: "Remote",
     period: "Dec 2025 – Feb 2026",
     description: "Working on agentic AI systems and autonomous agent development, implementing cutting-edge machine learning solutions and intelligent automation frameworks",
-    current: true,
+    current: false,
     color: "blue"
   },
   {
